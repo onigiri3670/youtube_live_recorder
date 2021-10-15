@@ -19,11 +19,11 @@ def fetch_live_info(channel_url)
         items.map do |item|
           video_id = item.dig('gridVideoRenderer', 'videoId')
           res = {
+            id: video_id,
             status: :reserved,
             title: item.dig('gridVideoRenderer', 'title', 'simpleText'),
             url: "https://www.youtube.com/watch?v=#{video_id}"
           }
-          pp res
           lives << res
         end
       end
