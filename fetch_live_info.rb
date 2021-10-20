@@ -4,7 +4,6 @@ require 'json'
 def fetch_live_info(channel_url)
   html = URI.open(channel_url).read
   json_str = html[/ytInitialData = (.*);/,1]
-  File.write('intial.json', json_str)
   ytInitialData = JSON.parse(json_str)
   tabs = ytInitialData.dig('contents', 'twoColumnBrowseResultsRenderer', 'tabs')
   lives = []
@@ -22,7 +21,8 @@ def fetch_live_info(channel_url)
               id: video_id,
               status: :reserved,
               title: item.dig('videoRenderer', 'title', 'simpleText'),
-              url: "https://www.youtube.com/watch?v=#{video_id}"
+              url: "https://www.youtube.com/watch?v=#{video_id}",
+              start_time: Time.at(item.dig('videoRenderer', 'upcomingEventData', 'startTime').to_i)
             }
             lives << res
           end
@@ -33,7 +33,8 @@ def fetch_live_info(channel_url)
               id: video_id,
               status: :reserved,
               title: item.dig('gridVideoRenderer', 'title', 'simpleText'),
-              url: "https://www.youtube.com/watch?v=#{video_id}"
+              url: "https://www.youtube.com/watch?v=#{video_id}",
+              start_time: Time.at(item.dig('videoRenderer', 'upcomingEventData', 'startTime').to_i)
             }
             lives << res
           end
