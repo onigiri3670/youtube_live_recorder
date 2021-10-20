@@ -10,7 +10,7 @@ target_channels.each do |channel_name, channel_url|
     next if live[:start_time] > (Time.now+3600*12)
     next if `ps -ax | grep wait_youtubu_live.sh`.include?(live[:url])
     p live
-    `/bin/bash alert_line.sh #{channel_name}のライブが検知されました。 #{live[:url]}`
+    `/bin/bash alert_line.sh '#{channel_name}のライブが検知されました。\n#{live[:url]}'`
     Thread.new do 
       `/bin/bash wait_youtubu_live.sh #{live[:url]} > logs/wait_youtube_live_#{live[:id]}.log 2>&1`
     end
@@ -18,5 +18,5 @@ target_channels.each do |channel_name, channel_url|
 rescue => e
   puts "#{e.message}. #{Time.now}"
   p e.backtrace
-  `/bin/bash alert_line.sh #{e.message}`
+  `/bin/bash alert_line.sh '#{e.message}'`
 end
