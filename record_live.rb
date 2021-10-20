@@ -10,7 +10,7 @@ target_channels.each do |channel_name, channel_url|
     next if `ps -ax | grep wait_youtubu_live.sh`.include?(live[:url])
     p live
     `/bin/bash alert_line.sh #{channel_name}のライブが検知されました。 #{live[:url]}`
-    fork do
+    Thread.new do 
       `/bin/bash wait_youtubu_live.sh #{live[:url]} > logs/wait_youtube_live_#{live[:id]}.log 2>&1`
     end
   end
