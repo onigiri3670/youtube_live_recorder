@@ -15,16 +15,28 @@ def fetch_live_info(channel_url)
       item_section_title = item_section_content.dig('shelfRenderer', 'title', 'runs')&.first&.dig('text') || next
       # puts item_section_title
       if item_section_title == 'Upcoming live streams'
-        items = item_section_content.dig('shelfRenderer', 'content', 'horizontalListRenderer', 'items') || next
-        items.map do |item|
-          video_id = item.dig('gridVideoRenderer', 'videoId')
-          res = {
-            id: video_id,
-            status: :reserved,
-            title: item.dig('gridVideoRenderer', 'title', 'simpleText'),
-            url: "https://www.youtube.com/watch?v=#{video_id}"
-          }
-          lives << res
+        if items =  item_section_content.dig('shelfRenderer', 'content', 'expandedShelfContentsRenderer', 'items')
+          items.map do |item|
+            video_id = item.dig('videoRenderer', 'videoId')
+            res = {
+              id: video_id,
+              status: :reserved,
+              title: item.dig('videoRenderer', 'title', 'simpleText'),
+              url: "https://www.youtube.com/watch?v=#{video_id}"
+            }
+            lives << res
+          end
+        elsif items = item_section_content.dig('shelfRenderer', 'content', 'horizontalListRenderer', 'items')
+          items.map do |item|
+            video_id = item.dig('gridVideoRenderer', 'videoId')
+            res = {
+              id: video_id,
+              status: :reserved,
+              title: item.dig('gridVideoRenderer', 'title', 'simpleText'),
+              url: "https://www.youtube.com/watch?v=#{video_id}"
+            }
+            lives << res
+          end
         end
       end
     end
