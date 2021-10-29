@@ -4,4 +4,4 @@ sleep 5;
 continue;
 done
 cd movie
-ls | grep -v part$ | xargs -I {}  /usr/local/bin/gdrive upload {} -p 1UMwCf6k3HYhZFQ36dTeRy8yhVKKVYEgP
+ls | grep -v part$ | xargs -I {} /bin/bash -c '/usr/local/bin/gdrive upload "{}" -p 1UMwCf6k3HYhZFQ36dTeRy8yhVKKVYEgP && rm "{}"'
