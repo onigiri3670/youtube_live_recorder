@@ -34,7 +34,7 @@ def fetch_live_info(channel_url)
               status: :reserved,
               title: item.dig('gridVideoRenderer', 'title', 'simpleText'),
               url: "https://www.youtube.com/watch?v=#{video_id}",
-              start_time: Time.at(item.dig('videoRenderer', 'upcomingEventData', 'startTime').to_i)
+              start_time: Time.at(item.dig('gridVideoRenderer', 'upcomingEventData', 'startTime').to_i)
             }
             lives << res
           end
