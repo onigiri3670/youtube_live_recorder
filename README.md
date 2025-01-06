@@ -1,0 +1,1 @@
+target_channel.ymlに録画対象のアカウントurlを記載した上で、record_live.rbをcrontabなどで定期実行する
