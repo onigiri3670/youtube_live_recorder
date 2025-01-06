@@ -1,9 +1,12 @@
 require 'open-uri'
 require 'json'
+require 'nokogiri'
 
 def fetch_live_info(channel_url)
   html = URI.open(channel_url).read
-  json_str = html[/ytInitialData = (.*);/,1]
+  doc = Nokogiri::HTML.parse(html)
+  script = doc.at_css('script:contains("ytInitialData")').text
+  json_str = script[/ytInitialData = (.*);/,1]
   ytInitialData = JSON.parse(json_str)
   tabs = ytInitialData.dig('contents', 'twoColumnBrowseResultsRenderer', 'tabs')
   lives = []
